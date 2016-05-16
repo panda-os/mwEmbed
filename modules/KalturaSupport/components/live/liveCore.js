@@ -460,6 +460,9 @@
             if ( mw.isIOS8_9() ) {
                 requestObj.rnd = Math.random();
             }
+            		var oldExpiry = _this.getKalturaClient().baseParam.expiry; 
+			_this.getKalturaClient().baseParam.expiry = 5; //Sets cache for 5 seconds beore isLive api call
+			
 			_this.getKalturaClient().doRequest( requestObj, function( data ) {
 				var onAirStatus = false;
 				if ( data === true ) {
@@ -473,6 +476,8 @@
 				mw.log("Error occur while trying to check onAir status");
 				embedPlayer.triggerHelper( 'liveStreamStatusUpdate', { 'onAirStatus' : false } );
 			} );
+			
+			_this.getKalturaClient().baseParam.expiry = oldExpiry; //Returns the client cache expiry to old values
 		},
 
 		getKalturaClient: function() {
